@@ -1,5 +1,6 @@
+// Rundeck's CLI tool is installed in master
 node('master') {
-    // Rundeck's CLI tool is installed in master
+
     stage(" =~ Archive Sources =~ "){
         timestamps {
             checkout scm
@@ -7,7 +8,7 @@ node('master') {
         }
     }
 
-    stage(' =~ Start Rundeck Job =~ ') {
+    stage(' =~ Rundeck Tasks =~ ') {
 
         dir("rundeck-scripts") {
            unstash "rundeck-scripts"
@@ -19,7 +20,7 @@ node('master') {
 	// Call external Python script to get status of Rundeck job
         // project name and job id is hard-coded for testing convenience :-((
 	sh "cd ${pwd()}/rundeck-scripts"
-        def rdjob_status = sh(returnStdout: true, script: 'python getRundeckJobStatus.py pipeline_poc 5c970e5b-8d36-4a28-8b5f-905a9c81949e')
+        def rdjob_status = sh(returnStdout: true, script: 'python ./getRundeckJobStatus.py pipeline_poc 5c970e5b-8d36-4a28-8b5f-905a9c81949e')
 
         withEnv([ 
             "RDJOB_STATUS = rdjob_status"

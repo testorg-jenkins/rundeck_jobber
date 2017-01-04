@@ -1,11 +1,14 @@
 #!/usr/bin/env python
 
 import subprocess
+import os
 import sys
 
 ## Globals...
 rd_cli = "rd "
 outformat = " -% " + "\"%id %status %href\" "
+os.environ['RD_URL'] = 'http://54.202.181.216:4440/api/18'
+os.environ['RD_TOKEN'] = 'SBrHrDFwDHr9PMcBI1V3AsKhk6YoIf3J'
 
 def getJobStatus(rd_project, job_uuid):
 
@@ -16,7 +19,12 @@ def getJobStatus(rd_project, job_uuid):
     ## expected output sample : 'succeeded'
     rdjob_status = rdcmd_out.split(' ')[1]
 
-    print("{0} job hosted in {1} project within Rundeck {2}".format(job_uuid, rd_project, rdjob_status))
+    print(" ==> Using env settings for Rundeck CLI: ")
+    os.system('echo $RD_URL')
+    os.system('echo $RD_TOKEN')
+
+    print()
+    print(" ==> Status of latest run for job with UUID, {0}, in Rundeck project, {1}, is : {2}".format(job_uuid, rd_project, rdjob_status))
 
     return None
 
