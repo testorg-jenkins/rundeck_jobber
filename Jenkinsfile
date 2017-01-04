@@ -3,7 +3,7 @@ node('master') {
     stage(" =~ Archive Sources =~ "){
         timestamps {
             checkout scm
-            stash-name: "rundeck-scripts"
+            stash name: "rundeck-scripts"
         }
     }
 
