@@ -7,24 +7,20 @@ node('master') {
         }
     }
 
-    stage(' =~ Unstashing... =~ ') {
+    stage(' =~ Start Rundeck Job =~ ') {
+
         dir("rundeck-scripts") {
            unstash "rundeck-scripts"
         }
-    }
  
-    stage(' =~ Start Rundeck Job =~ ') {
         // Why not use the same script with additional parmater to start the job ?
-	sh "cd ${pwd()}/rundeck-scripts"
-	sh "rundeck_job.sh"
-    }
-
-    stage(' =~ Rundeck Job Check =~ ') {
+	sh "cd ${pwd()}/rundeck-scripts/rundeck_job.sh"
 
 	// Call external Python script to get status of Rundeck job
         // project name and job id is hard-coded for testing convenience :-((
 	sh "cd ${pwd()}/rundeck-scripts"
         def rdjob_status = sh(returnStdout: true, script: 'python getRundeckJobStatus.py pipeline_poc 5c970e5b-8d36-4a28-8b5f-905a9c81949e')
+
         withEnv([ 
             "RDJOB_STATUS = rdjob_status"
         ])
