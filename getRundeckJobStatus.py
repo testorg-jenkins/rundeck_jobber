@@ -19,11 +19,10 @@ def getJobStatus(rd_project, job_uuid):
     ## expected output sample : 'succeeded'
     rdjob_status = rdcmd_out.split(' ')[1]
 
-    print()
     print(" ==> Status of latest run for job with UUID, {0}, in Rundeck project, {1} : {2}".format(job_uuid, rd_project, rdjob_status))
 
     with open('jobinfo.txt', 'w') as rdjob:
-        rdjob.write(rdjob_status)
+        rdjob.write(rdjob_status + "\n")
 
     return None
 
@@ -32,10 +31,6 @@ def main():
 
     project = sys.argv[1]
     jobid   = sys.argv[2]
-
-    print(" ==> Using env settings for Rundeck CLI: ")
-    os.system('echo $RD_URL')
-    os.system('echo $RD_TOKEN')
 
     getJobStatus(project, jobid)
 

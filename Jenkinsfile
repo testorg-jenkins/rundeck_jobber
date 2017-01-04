@@ -23,7 +23,7 @@ node('master') {
         sh "python ./getRundeckJobStatus.py pipeline_poc 5c970e5b-8d36-4a28-8b5f-905a9c81949e"
         
         // why this doesn't work ?
-        def rdjob_status = sh(returnStdout: true, script: 'python ./getRundeckJobStatus.py pipeline_poc 5c970e5b-8d36-4a28-8b5f-905a9c81949e')
+        // def rdjob_status = sh(returnStdout: true, script: 'python ./getRundeckJobStatus.py pipeline_poc 5c970e5b-8d36-4a28-8b5f-905a9c81949e')
 
         withEnv([ 
             "RDJOB_STATUS = rdjob_status"
