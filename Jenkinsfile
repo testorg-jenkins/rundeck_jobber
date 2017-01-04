@@ -25,9 +25,13 @@ node('master') {
             // why this doesn't work ?
             // def rdjob_status = sh(returnStdout: true, script: 'python ./getRundeckJobStatus.py pipeline_poc 5c970e5b-8d36-4a28-8b5f-905a9c81949e')
 
-            def rdjob_status = readFile('jobinfo.txt')
-            echo "Status of rundeck job (parsed from jobinfo) ==>"
-            echo "${rdjob_status}"
+            def rdjob_file = fileExists('jobinfo.txt')
+
+            if (rdjob_file) {
+                def rdjob_status = readFile('jobinfo.txt')
+                echo "Status of rundeck job (parsed from jobinfo) ==>"
+                echo "${rdjob_status}"
+            }
         }
 
         // Cleanup stashed sources
