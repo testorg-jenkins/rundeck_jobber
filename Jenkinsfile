@@ -25,17 +25,8 @@ node('master') {
         // why this doesn't work ?
         // def rdjob_status = sh(returnStdout: true, script: 'python ./getRundeckJobStatus.py pipeline_poc 5c970e5b-8d36-4a28-8b5f-905a9c81949e')
 
-        withEnv([ 
-            "RDJOB_STATUS = rdjob_status"
-        ])
-    }
-
-    stage(" =~=~= Collect Env vars... =~=~= ") {
-        sh 'env > env_vars.txt'
-        def envdump = readFile('env_vars.txt')
-        echo "== START: Dump of enviroment variables =="
-        echo "${envdump}"
-        echo "== END: Dump of enviroment variables =="
+        def rdjob_status = readFile('jobinfo.txt')
+        echo "Status of rundeck job (parsed from jobinfo) ==>"
+        echo "${rdjob_status}"
     }
 }
-
