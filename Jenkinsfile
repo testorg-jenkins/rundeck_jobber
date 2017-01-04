@@ -1,8 +1,10 @@
 node('master') {
     // Rundeck's CLI tool is installed in master
-    timestamps {
-        checkout scm
-        stash-name: "rundeck-scripts"
+    stage(" =~ Archive Sources =~ "){
+        timestamps {
+            checkout scm
+            stash-name: "rundeck-scripts"
+        }
     }
 
     stage(' =~ Unstashing... =~ ') {
