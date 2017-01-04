@@ -31,6 +31,8 @@ node('master') {
                 def rdjob_status = readFile('jobinfo.txt')
                 echo "Status of rundeck job (parsed from jobinfo) ==>"
                 echo "${rdjob_status}"
+            } else if (!rdjob_file) {
+                echo " ==> Rundeck job status could not be ascertained !!!"
             }
         }
 
