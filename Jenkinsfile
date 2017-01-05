@@ -36,9 +36,22 @@ node('master') {
             }
         }
 
+        withEnv([
+            "RDJOB_STATUS=${rdjob_status}"
+        ]) {
+            node {
+                stage(' =~ Env Dump =~ ') {
+                    sh 'env > env_vars.txt'
+                    def envdump = readFile('env_vars.txt')
+                    echo " =~> [Start]: Dumping environment variables =~> "
+                    echo "${envdump}"
+                    echo " =~> [End]: Dumping environment variables =~> "
+                }
+            }
+        }
+
         // Cleanup stashed sources
 	dir ("rundeck-scripts") {
             deleteDir()
         }
-    }
 }
