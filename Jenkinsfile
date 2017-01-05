@@ -54,4 +54,5 @@ node('master') {
 	dir ("rundeck-scripts") {
             deleteDir()
         }
+    }
 }
