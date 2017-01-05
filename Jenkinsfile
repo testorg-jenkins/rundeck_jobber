@@ -14,6 +14,7 @@ node('master') {
            unstash "rundeck-scripts"
         }
  
+        // Helps to switch to the relevant dir to execute needed scripts
 	dir ("rundeck-scripts") {
 	    sh "./rundeck_job.sh"
 
@@ -29,30 +30,31 @@ node('master') {
 
             if (rdjob_file) {
                 def rdjob_status = readFile('jobinfo.txt')
+                env.RDJOB_STATUS = rdjob_status
                 echo "Status of rundeck job (parsed from jobinfo) ==>"
                 echo "${rdjob_status}"
             } else if (!rdjob_file) {
+                env.RDJOB_STATUS = "UNKNOWN"
                 echo " ==> Rundeck job status could not be ascertained !!!"
             }
         }
 
-        withEnv([
-            "RDJOB_STATUS=${rdjob_status}"
-        ]) {
-            node {
-                stage(' =~ Env Dump =~ ') {
-                    sh 'env > env_vars.txt'
-                    def envdump = readFile('env_vars.txt')
-                    echo " =~> [Start]: Dumping environment variables =~> "
-                    echo "${envdump}"
-                    echo " =~> [End]: Dumping environment variables =~> "
-                }
-            }
-        }
-
-        // Cleanup stashed sources
+	// Cleanup stashed sources
 	dir ("rundeck-scripts") {
             deleteDir()
         }
     }
 }
+
+
+
+node {
+    stage(' =~ Env Dump =~ ') {
+        sh 'env > env_vars.txt'
+        def envdump = readFile('env_vars.txt')
+        echo " =~> [Start]: Dumping environment variables =~> "
+        echo "${envdump}"
+        echo " =~> [End]: Dumping environment variables =~> "
+    }
+}
+
