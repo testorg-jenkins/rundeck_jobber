@@ -49,11 +49,11 @@ node('master') {
 
 
 node('linux') {
-    if (${RDJOB_STATUS} =~ /failed/) {
+    if (env.RDJOB_STATUS =~ /failed/) {
         stage(' =!~ RUNDECK JOB FAILED =!~ ') {
             echo " ==> Rundeck job failed, check job logs in Rundeck "
         }
-    } else if (${RDJOB_STATUS} =~ /succeeded/) {
+    } else if (env.RDJOB_STATUS =~ /succeeded/) {
         stage(' =~ Env Dump =~ ') {
             echo " ==> Rundeck job passed "
             sh 'env > env_vars.txt'
