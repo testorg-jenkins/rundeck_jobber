@@ -53,12 +53,11 @@ node('linux') {
         stage(' =!~ RUNDECK JOB FAILED =!~ ') {
             echo " ==> Rundeck job failed, check job logs in Rundeck "
         }
-    else if (env.RDJOB_STATUS == "UNKNOWN") {
+    } else if (env.RDJOB_STATUS == "UNKNOWN") {
         stage(' =*~ RUNDECK CFG UPSET =*~ ') {
             echo " ==> Rundeck job status unavailable, check configuration in Rundeck "
         }
-    }
-    else {
+    } else {
         stage(' =~ Env Dump =~ ') {
             echo " ==> Rundeck job passed "
             sh 'env > env_vars.txt'
