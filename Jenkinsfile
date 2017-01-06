@@ -49,15 +49,11 @@ node('master') {
 
 
 node('linux') {
-    if (env.RDJOB_STATUS == "FAILED") {
+    if (${RDJOB_STATUS} =~ /failed/) {
         stage(' =!~ RUNDECK JOB FAILED =!~ ') {
             echo " ==> Rundeck job failed, check job logs in Rundeck "
         }
-    } else if (env.RDJOB_STATUS == "UNKNOWN") {
-        stage(' =*~ RUNDECK CFG UPSET =*~ ') {
-            echo " ==> Rundeck job status unavailable, check configuration in Rundeck "
-        }
-    } else {
+    } else if (${RDJOB_STATUS} =~ /succeeded/) {
         stage(' =~ Env Dump =~ ') {
             echo " ==> Rundeck job passed "
             sh 'env > env_vars.txt'
@@ -65,6 +61,10 @@ node('linux') {
             echo " =~> [Start]: Dumping environment variables =~> "
             echo "${envdump}"
             echo " =~> [End]: Dumping environment variables =~> "
+        }
+    } else {
+        stage(' =*~ RUNDECK CFG UPSET =*~ ') {
+            echo " ==> Rundeck job status unavailable, check configuration in Rundeck "
         }
     }
 }
